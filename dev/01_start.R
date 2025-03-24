@@ -62,7 +62,7 @@ golem::use_utils_ui(with_test = TRUE)
 golem::use_utils_server(with_test = TRUE)
 
 ## Use git ----
-usethis::use_github()
+usethis::use_github("origin", url = NULL, overwrite = TRUE)
 
 
 # You're now set! ----

@@ -17,11 +17,28 @@
 ## Amend DESCRIPTION with dependencies read from package code parsing
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
+usethis::use_package("bslib")
+usethis::use_package("feasts")
+usethis::use_package("fabletools")
+usethis::use_package("shiny")
+usethis::use_package("RTL")
+usethis::use_package("dplyr")
+usethis::use_package("tidyr")
+usethis::use_package("ggplot2")
+usethis::use_package("scales")
+usethis::use_package("plotly")
+usethis::use_package("zoo")
+usethis::use_package("tseries")
 
 ## Add modules ----
-## Create a module infrastructure in R/
-golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+
+
+# Process Modules
+
+golem::add_module(name = "Series", with_test = TRUE)
+
+golem::add_module(name = "EDA", with_test = TRUE)
+# golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -30,11 +47,8 @@ golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
-golem::add_js_file("script")
-golem::add_js_handler("handlers")
-golem::add_css_file("custom")
-golem::add_sass_file("custom")
-golem::add_any_file("file.json")
+# golem::add_css_file("custom")
+
 
 ## Add internal datasets ----
 ## If you have data in your package

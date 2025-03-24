@@ -18,6 +18,7 @@
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
 usethis::use_package("bslib")
+usethis::use_package("bsicons")
 usethis::use_package("feasts")
 usethis::use_package("fabletools")
 usethis::use_package("shiny")

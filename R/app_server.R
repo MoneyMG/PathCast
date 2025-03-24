@@ -5,6 +5,6 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  r <- Shiny::reactiveValues()
+  r <- shiny::reactiveValues()
 
 }

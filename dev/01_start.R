@@ -34,7 +34,6 @@ golem::fill_desc(
   pkg_version = "0.0.0.9000", # The version of the package containing the app
   set_options = TRUE # Set the global golem options
 )
-
 ## Install the required dev dependencies ----
 golem::install_dev_deps()
 

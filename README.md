@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/rocket-takeoff.svg" width="20"> `{PathCast}`
+# <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/rocket-takeoff-fill.svg" width="20"> `{PathCast}`
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -30,7 +30,7 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2025-03-24 16:06:44 MDT"
+#> [1] "2025-03-24 16:16:14 MDT"
 ```
 
 Here are the tests results and package coverage:
@@ -39,7 +39,7 @@ Here are the tests results and package coverage:
 devtools::check(quiet = TRUE)
 #> ℹ Loading PathCast
 #> ── R CMD check results ──────────────────────────────── PathCast 0.0.0.9000 ────
-#> Duration: 33.3s
+#> Duration: 1m 34.3s
 #> 
 #> ❯ checking DESCRIPTION meta-information ... WARNING
 #>   Non-standard license specification:

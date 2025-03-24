@@ -11,16 +11,20 @@ mod_Series_ui <- function(id) {
   ns <- NS(id)
   series <- c('SPY', 'CL', 'CL/SYN Spread')
   tagList(
-    shiny::radioButtons(ns('series'), "Select a Process", choices = series, selected = 'SPY', inline = TRUE)
+    shiny::radioButtons(ns('series'), "Select a 'Process'", choices = series, selected = 'SPY', inline = TRUE)
   )
 }
 
 #' Series Server Functions
 #'
 #' @noRd
-mod_Series_server <- function(id){
+mod_Series_server <- function(id, r){
   moduleServer(id, function(input, output, session){
-    ns <- session$ns
+    # ns <- session$ns
+    shiny::observeEvent(input$series){
+
+      r$series <- input$series
+    }
 
   })
 }

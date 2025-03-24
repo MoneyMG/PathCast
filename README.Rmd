@@ -13,7 +13,7 @@ output: github_document
 )
 ```
 
-# `{PathCast}`
+# `r bsicons::bs_icon("rocket-takeoff")` `{PathCast}`
 
 <!-- badges: start -->
 <!-- badges: end -->

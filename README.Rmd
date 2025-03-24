@@ -13,7 +13,7 @@ output: github_document
 )
 ```
 
-# `r bsicons::bs_icon("rocket-takeoff")` `{PathCast}`
+# <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/rocket-takeoff.svg" width="20"> `{PathCast}`
 
 <!-- badges: start -->
 <!-- badges: end -->

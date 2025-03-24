@@ -21,10 +21,10 @@ mod_Series_ui <- function(id) {
 mod_Series_server <- function(id, r){
   moduleServer(id, function(input, output, session){
     # ns <- session$ns
-    shiny::observeEvent(input$series){
+    shiny::observeEvent(input$series, {
 
       r$series <- input$series
-    }
+    })
 
   })
 }

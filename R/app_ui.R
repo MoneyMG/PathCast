@@ -11,7 +11,8 @@ app_ui <- function(request) {
     # Your application UI logic
     navbarPage(
       title = tagList(bsicons::bs_icon("rocket-takeoff"), "PathCast"),
-      tabPanel("Series Selection", mod_Series_ui("Series_1"))
+      tabPanel("Series Selection", mod_Series_ui("Series_1")),
+      tabPanel("EDA", mod_EDA_ui("EDA_1"))
     )
 
   )

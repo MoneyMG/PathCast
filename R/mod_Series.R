@@ -20,10 +20,10 @@ mod_Series_ui <- function(id) {
       height = "auto"
     ),
     br(),
-    shiny::tags$h2("Difussion Processes. The Initial Frontier."),
+    shiny::tags$h2("Diffusion Processes. The Initial Frontier."),
     br(),
     shiny::tags$p("In the ever-expanding universe of finance,
-                  understanding how variables spread and evolve is key to unlocking new strategies.
+                  understanding how variables spread and evolve presents a key to unlocking new strategies.
                   This app explores the application of diffusion processes to different types of financial markets, using machine learning to estimate their behavior and
                   offer insights on how our estimations can shape trading strageties."),
     br(),
@@ -45,17 +45,27 @@ mod_Series_server <- function(id, r){
 
       r$series <- input$series
 
-      golem::message_dev(paste("Series selection updated:", input$series))
-
       output$seriesmessage <- shiny::renderText({
         if(input$series == 'SPY'){
         paste(input$series, "is more like the universe than you think. Head to exploratory data analysis (EDA) for an explaination.")
       }else if(input$series == 'CL'){
-        paste("Much like you space cowboy, the", input$series, "process is affected by gravitational pull. Head to exploratory data analysis (EDA) for an explaination.")
+        paste("Much like yourself, the", input$series, "process is affected by gravitational pull. Head to exploratory data analysis (EDA) for an explaination.")
       }else{
-        paste("The", input$series, "process is akin to black holes colliding. Head to exploratory data analysis (EDA) for an explaination.")
+        paste("The", input$series, "process is akin to a SAFER pack. Head to exploratory data analysis (EDA) for an explaination.")
       }
       })
+
+      edaimage <- shiny::reactive({
+        if (input$series == "SPY") {
+          "www/Expanding.png"
+        } else if (input$series == "CL") {
+          "www/PushPull.png"
+        } else {
+          "www/SAFER.png"
+        }
+      })
+
+      r$edaimage <- edaimage()
 
     })
 

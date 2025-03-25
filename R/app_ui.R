@@ -10,8 +10,10 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     navbarPage(
-      title = tagList(bsicons::bs_icon("rocket-takeoff"), "PathCast")
+      title = tagList(bsicons::bs_icon("rocket-takeoff"), "PathCast"),
+      tabPanel("Series Selection", mod_Series_ui("Series_1"))
     )
+
   )
 }
 

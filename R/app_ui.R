@@ -33,7 +33,12 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
+    favicon(
+      ico = "PathCast",
+      rel = "shortcut icon",
+      resources_path = "www",
+      ext = "ico"
+    ),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = "PathCast"

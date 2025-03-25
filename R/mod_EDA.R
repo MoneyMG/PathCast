@@ -13,8 +13,8 @@ mod_EDA_ui <- function(id) {
     div(
       class = 'text-center',
       tags$img(
-        src = ns('imagestring'),
-        alt = ns('imagestring'),
+        src = ns('source'),
+        alt = ns('source'),
         width = "300px",
         height = "auto"
       )
@@ -29,7 +29,8 @@ mod_EDA_server <- function(id, r){
   moduleServer(id, function(input, output, session){
 
     ns <- session$ns
-    print(reactiveValuesToList(r))
+
+
 
 
   })

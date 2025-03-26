@@ -48,7 +48,7 @@ golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
-# golem::add_css_file("custom")
+golem::add_css_file("pathcast_styling.css", dir = "inst/app/www")
 
 
 ## Add internal datasets ----

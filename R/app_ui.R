@@ -6,6 +6,9 @@
 #' @noRd
 app_ui <- function(request) {
   tagList(
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "www/pathcast_styling.css")
+    ),
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic

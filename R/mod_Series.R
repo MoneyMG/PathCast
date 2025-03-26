@@ -23,9 +23,9 @@ mod_Series_ui <- function(id) {
     shiny::tags$h2("Diffusion Processes. The Initial Frontier."),
     br(),
     shiny::tags$p("In the ever-expanding universe of finance,
-                  understanding how variables spread and evolve presents a key to unlocking new strategies.
+                  understanding how variables spread and evolve presents a key to understanding how market mechanics can be exploited.
                   This app explores the application of diffusion processes to different types of financial markets, using machine learning to estimate their behavior and
-                  offer insights on how our estimations can shape trading strageties."),
+                  offer insights on how our estimations can inform trading strageties."),
     br(),
     shiny::radioButtons(ns('series'), "Select a 'Process'", choices = series, selected = 'SPY', inline = TRUE),
     br(),
@@ -65,7 +65,29 @@ mod_Series_server <- function(id, r){
         }
       })
 
+      edaimage_size <- shiny::reactive({
+        if (input$series == "SPY") {
+          "500px"
+        } else if (input$series == "CL") {
+          "500px"
+        } else {
+          "400px"
+        }
+      })
+
+      edatitle <- shiny::reactive({
+        if (input$series == "SPY") {
+          "Geometric Brownian Motion"
+        } else if (input$series == "CL") {
+          "Ornstein–Uhlenbeck"
+        } else {
+          "Ornstein–Uhlenbeck with Jumps"
+        }
+      })
+
       r$edaimage <- edaimage()
+      r$edaimage_size <- edaimage_size()
+      r$edatitle <- edatitle()
 
     })
 

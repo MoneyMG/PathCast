@@ -36,6 +36,12 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
+    tags$style(HTML("
+      @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+      * {
+        font-family: 'Raleway', sans-serif !important;
+      }
+    ")), #Not sure why inline works but file doesn't Need to check structure
     favicon(
       ico = "PathCast",
       rel = "shortcut icon",

@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_Series_ui <- function(id) {
   ns <- NS(id)
-  series <- c('SPY', 'CL', 'CL/SYN Spread')
+  series <- c('SPY', 'CL01', 'CL/SYN Spread')
   tagList(
     div(
       class = 'text-center',
@@ -48,7 +48,7 @@ mod_Series_server <- function(id, r){
       output$seriesmessage <- shiny::renderText({
         if(input$series == 'SPY'){
         paste(input$series, "is more like the universe than you think. Head to exploratory data analysis (EDA) for an explaination.")
-      }else if(input$series == 'CL'){
+      }else if(input$series == 'CL01'){
         paste("Much like yourself, the", input$series, "process is affected by gravitational pull. Head to exploratory data analysis (EDA) for an explaination.")
       }else{
         paste("The", input$series, "process is akin to a SAFER pack. Head to exploratory data analysis (EDA) for an explaination.")
@@ -58,7 +58,7 @@ mod_Series_server <- function(id, r){
       edaimage <- shiny::reactive({
         if (input$series == "SPY") {
           "www/Expanding.png"
-        } else if (input$series == "CL") {
+        } else if (input$series == "CL01") {
           "www/PushPull.png"
         } else {
           "www/SAFER.png"
@@ -68,7 +68,7 @@ mod_Series_server <- function(id, r){
       edaimage_size <- shiny::reactive({
         if (input$series == "SPY") {
           "500px"
-        } else if (input$series == "CL") {
+        } else if (input$series == "CL01") {
           "500px"
         } else {
           "400px"
@@ -78,7 +78,7 @@ mod_Series_server <- function(id, r){
       edatitle <- shiny::reactive({
         if (input$series == "SPY") {
           "Geometric Brownian Motion"
-        } else if (input$series == "CL") {
+        } else if (input$series == "CL01") {
           "Ornstein–Uhlenbeck"
         } else {
           "Ornstein–Uhlenbeck with Jumps"

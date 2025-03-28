@@ -12,9 +12,10 @@ mod_EDA_ui <- function(id) {
   tagList(
     div(
       class = 'text-center',
-      uiOutput(ns("source")),
+      tags$h1(shiny::textOutput(ns('title'))),
       br(),
-      tags$h1(shiny::textOutput(ns('title')))
+      uiOutput(ns("source")),
+      DT::DTOutput(ns('data'))
     )
   )
 }
@@ -28,9 +29,9 @@ mod_EDA_server <- function(id, r){
     ns <- session$ns
 
     output$source <- shiny::renderUI({
-      req(r$edaimage)  # Ensure `r$edaimage` is not NULL
+      req(r$edaimage)
       tags$img(
-        src = r$edaimage,  # Use the reactive image path
+        src = r$edaimage,
         alt = "EDA Image",
         width = r$edaimage_size,
         height = "auto"
@@ -38,6 +39,27 @@ mod_EDA_server <- function(id, r){
     })
 
     output$title <- shiny::renderText(r$edatitle)
+
+    data <- shiny::reactive({
+      if(r$series == 'SPY'){
+        spy_data
+      }else if(r$series == 'CL/SYN Spread'){
+        spread_data
+      }else{
+        cl01_data
+      }
+
+
+    })
+
+    shiny::observe({
+      r$data <- data()
+      r$ts <- data() %>%
+        dplyr::select(t)
+
+    })
+
+    output$data <- shiny::renderDataTable(r$data)
   })
 }
 

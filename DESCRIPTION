@@ -7,14 +7,27 @@ Description: What the package does (one paragraph).
 License: file LICENSE
 Imports: 
     bsicons,
+    bslib,
     config,
     dplyr,
     DT,
+    fabletools,
+    feasts,
+    ggplot2,
     golem,
-    shiny
+    magrittr,
+    plotly,
+    RTL,
+    scales,
+    shiny,
+    tidyr,
+    tseries,
+    zoo
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.5)

@@ -54,12 +54,10 @@ mod_EDA_server <- function(id, r){
 
     shiny::observe({
       r$data <- data()
-      r$ts <- data() %>%
-        dplyr::select(t)
 
     })
 
-    output$data <- shiny::renderDataTable(r$data)
+    output$data <- DT::renderDT(r$data)
   })
 }
 

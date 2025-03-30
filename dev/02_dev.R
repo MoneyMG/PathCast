@@ -30,6 +30,7 @@ usethis::use_package("scales")
 usethis::use_package("plotly")
 usethis::use_package("zoo")
 usethis::use_package("tseries")
+usethis::use_package('magrittr')
 
 ## Add modules ----
 

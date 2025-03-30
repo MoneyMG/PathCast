@@ -36,13 +36,13 @@ cl01_data <- RTL::dflong %>%
 
 masterlong <- dplyr::bind_rows(spread_data, spy_data, cl01_data)
 
-masterlong %>%
-  ggplot(aes(x = date, y = value, col = series)) + geom_line()
 
-eda_text <-
-  tibble::tibble(
-    id <- c('geo', 'OU', 'OUJ')
-  )
+
+# eda_text <-
+#   tibble::tibble(
+#     id <- c('geo', 'OU', 'OUJ')
+#   )
 
 
 usethis::use_data(spy_data, spread_data, cl01_data, masterlong, overwrite = TRUE)
+

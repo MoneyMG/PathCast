@@ -27,4 +27,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: True
-        tags: magad1/PathCast:latest
+        tags: magad1/pathcast:latest

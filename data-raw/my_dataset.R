@@ -38,11 +38,40 @@ masterlong <- dplyr::bind_rows(spread_data, spy_data, cl01_data)
 
 
 
-# eda_text <-
-#   tibble::tibble(
-#     id <- c('geo', 'OU', 'OUJ')
-#   )
+eda_text <-
+  tibble::tibble(
+    id = c('SPY', 'CL01', 'CL/SYN Spread'),
+    explaination = c(
+      'Just as the universe, shaped by initial conditions and influenced by random events, evolves in a complex, probabilistic manner,
+      financial assets move within a framework of historical influences, market forces, and unpredictable shocks. While the path may be informed by past data,
+      the future remains uncertain, shaped by both deterministic factors and inherent randomness.',
+      'The OU process models a system that fluctuates around a long-term mean, much like how gravity pulls objects toward equilibrium.
+      Think of planets oscillating in their orbits or galaxies being drawn toward their local clusters.
+      If GBM is the chaotic expansion of the universe, OU is the stabilizing force that brings order to the chaos',
+      'A Simplified Aid for EVA Rescue (SAFER) pack is used in case an astronaut is subjected to a shock that pushes them far away from the space craft.
+       It uses small thrusters to propel the astronaut back — just like how the mean-reverting force (θ) in an OU process pulls
+      a system toward equilibrium. However, just as unexpected bursts or external forces can cause abrupt disruptions in space, random jumps in an OUJ process introduce sudden
+      deviations before the system stabilizes again.'
+    )
+  )
 
+eda_markdown <-
+  tibble::tibble(
+    id = c('SPY', 'SPY', 'CL01', 'CL/SYN Spread'),
+    Process = c('GBM', 'GBM_drift', 'OU', 'OUJ'),
+    Formula = c(
+      "$dS_t = \\mu S_t dt + \\sigma S_t dW_t$",
+      "$dS_t = (\\mu S_t + \\theta) dt + \\sigma S_t dW_t$",
+      "$dX_t = \\theta (\\mu - X_t) dt + \\sigma dW_t$",
+      "$dX_t = \\theta (\\mu - X_t) dt + \\sigma dW_t + J dN_t$"
+    )
+
+  )
+
+eda_markdown %>% gt::gt() %>%
+  gt::fmt_markdown(columns = 'Formula')
 
 usethis::use_data(spy_data, spread_data, cl01_data, masterlong, overwrite = TRUE)
+
+usethis::use_data(eda_text, eda_markdown, overwrite = T)
 

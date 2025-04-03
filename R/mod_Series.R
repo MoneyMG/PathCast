@@ -85,9 +85,17 @@ mod_Series_server <- function(id, r){
         }
       })
 
+      edaexplan <- shiny::reactive({
+        eda_text %>%
+          dplyr::filter(id == input$series) %>%
+          dplyr::pull(explaination)
+
+      })
+
       r$edaimage <- edaimage()
       r$edaimage_size <- edaimage_size()
       r$edatitle <- edatitle()
+      r$eda_explanation <- edaexplan()
 
     })
 

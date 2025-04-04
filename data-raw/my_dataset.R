@@ -74,15 +74,7 @@ eda_markdown <-
 
   )
 
-eda_markdown %>%
-  dplyr::select(-id) %>%
-  gt::gt() %>%
-  gt::fmt_markdown(columns = c('Continuous', 'Discrete')) %>%
-  gt::tab_spanner(
-    label = "Formula",
-    columns = c('Continuous', 'Discrete')
-  ) %>%
-  gt::opt_table_lines()
+
 
 usethis::use_data(spy_data, spread_data, cl01_data, masterlong, overwrite = TRUE)
 

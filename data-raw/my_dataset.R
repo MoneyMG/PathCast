@@ -97,7 +97,7 @@ eda_problems <-
         <li style='margin-bottom: 1.5em;'>Discrete observations of a continuous OU process can obscure the underlying dynamics, especially at lower sampling frequencies.</li>
         <li style='margin-bottom: 1.5em;'>Non-linearities in real-world mean reversion may not be well captured by the linear OU formulation.</li>
         <li style='margin-bottom: 1.5em;'>Parameter estimation for OU models can be biased in the presence of market microstructure noise or illiquidity.</li>
-        <li style='margin-bottom: 1.5em;'>Many ML models assume i.i.d. observations, which conflicts with the autocorrelated structure of OU processes.</li>
+        <li style='margin-bottom: 1.5em;'>Many ML models assume i.i.d. (independent and idenditically distributed) observations, which conflicts with the autocorrelated structure of OU processes.</li>
       </ul>
       "
       ,

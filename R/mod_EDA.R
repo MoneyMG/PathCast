@@ -122,33 +122,33 @@ mod_EDA_server <- function(id, r){
       if (r$series == 'Geometric Brownian Motion') {
         tagList(
           shiny::fluidRow(
-            shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price (S0)", value = params[2])),
-            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (sigma)", value = params[4], step = 0.01)),
-            shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (T2M)", value = params[5])),
-            shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (dt)", value = params[6]))
+            shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price ($)", value = params[2])),
+            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (decimal form, 0.2 = 20%)", value = params[4], step = 0.01)),
+            shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (yrs)", value = params[5])),
+            shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (fraction of yr, 0.083 = 1 Month)", value = params[6]))
           )
         )
       }else if(r$series == 'Ornstein-Uhlenbeck (OU)'){
         tagList(
           shiny::fluidRow(
-            shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price (S0)", value = params[2])),
-            shiny::column(3, shiny::numericInput(ns("mu"), "Mean (mu)", value = params[3])),
-            shiny::column(3, shiny::numericInput(ns("theta"), "Reversion Speed (theta)", value = params[4])),
-            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (sigma)", value = params[5], step = 0.01)),
-            shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (T2M)", value = params[6])),
-            shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (dt)", value = params[7]))
+            shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price ($)", value = params[2])),
+            shiny::column(3, shiny::numericInput(ns("mu"), "Mean ($)", value = params[3])),
+            shiny::column(3, shiny::numericInput(ns("theta"), "Reversion Speed (Time Steps)", value = params[4])),
+            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (decimal form, 0.2 = 20%)", value = params[5], step = 0.01)),
+            shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (yrs)", value = params[6])),
+            shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (fraction of yr, 0.083 = 1 Month)", value = params[7]))
           )
         )
       }else{
         tagList(
           tags$p('See Ornstein-Uhlenbeck (OU) for underlying OU process'),
           shiny::fluidRow(
-            shiny::column(3, shiny::numericInput(ns("theta"), "Reversion Speed (theta)", value = params[4])),
-            shiny::column(3, shiny::numericInput(ns("lambda"), "Jump Probability (lambda)", value = params[6])),
-            shiny::column(3, shiny::numericInput(ns("mu_jump"), "Mean Jump Size", value = params[7])),
-            shiny::column(3, shiny::numericInput(ns("sd_jump"), "Jump Standard Deviation", value = params[8])),
-            shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (T2M)", value = params[9])),
-            shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (dt)", value = params[10]))
+            shiny::column(3, shiny::numericInput(ns("theta"), "Reversion Speed (Time Steps)", value = params[4])),
+            shiny::column(3, shiny::numericInput(ns("lambda"), "Jump Probability (decimal form, 0.05 = 5%)", value = params[6])),
+            shiny::column(3, shiny::numericInput(ns("mu_jump"), "Mean Jump Size ($)", value = params[7])),
+            shiny::column(3, shiny::numericInput(ns("sd_jump"), "Jump Standard Deviation (decimal form, 0.05 = 5%)", value = params[8])),
+            shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (yrs)", value = params[9])),
+            shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (fraction of yr, 0.083 = 1 Month)", value = params[10]))
           )
         )
       }

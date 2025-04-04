@@ -18,6 +18,7 @@ Imports:
     feasts,
     ggplot2,
     golem,
+    gt,
     magrittr,
     plotly,
     RTL,

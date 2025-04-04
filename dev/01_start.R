@@ -22,8 +22,8 @@ golem::fill_desc(
   pkg_name = "PathCast",
   pkg_title = "A Look at How to Leverage Machine Learning to Estimate Difussion Processes",
   pkg_description = "PathCast is a golem app that is deployable from your command line. The app looks at 3 distintic diffusion processes and their characterisictics. After a visual
-                      inspection of their characteristics, it then looks if there any preprocessing necassary before running through a machine learning process. Finally
-                      it provides a visual representation of the ML performance.",
+                      inspection of their characteristics, it then looks if there any preprocessing necassary before running through a machine learning process. Its goal is
+  to provide a comprehensive insight into the mental model behind ML design.",
   authors = person(
     given = "Mitch",
     family = "Greer",

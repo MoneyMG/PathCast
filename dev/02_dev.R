@@ -32,6 +32,7 @@ usethis::use_package("zoo")
 usethis::use_package("tseries")
 usethis::use_package('magrittr')
 usethis::use_package('broom')
+usethis::use_package('gt')
 
 ## Add modules ----
 

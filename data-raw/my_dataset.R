@@ -74,9 +74,53 @@ eda_markdown <-
 
   )
 
+eda_problems <-
+  tibble::tibble(
+    id = c('SPY', 'CL01', 'CL/SYN Spread'),
+    problems = c(
+
+      "<ul>
+        <li style='margin-bottom: 1.5em;'>True GBM rarely is expressed in reality, but over the short term its behavior could manifest.</li>
+        <li style='margin-bottom: 1.5em;'>How we define drift can drastically affect estimated parameters.</li>
+        <li style='margin-bottom: 1.5em;'>Real-world price movements exhibit fat tails, autocorrelation, and mean reversion—all of which violate the pure GBM assumptions.</li>
+        <li style='margin-bottom: 1.5em;'>ML models may conflate drift (μ) with stochastic volatility (σ), especially over short time horizons.</li>
+        <li style='margin-bottom: 1.5em;'>Many ML models assume stationarity, but GBM has a non-stationary mean (it trends over time).</li>
+        <li style='margin-bottom: 1.5em;'>Limited data granularity can obscure the continuous-time nature of GBM, leading to estimation errors.</li>
+        <li style='margin-bottom: 1.5em;'>Models trained on historical data may fail to adapt to structural breaks or regime shifts in financial markets.</li>
+      </ul>
+      ",
+
+      "<ul>
+        <li style='margin-bottom: 1.5em;'>OU processes are mean-reverting by design, but estimating the speed of mean reversion (θ) can be sensitive to time scale and noise.</li>
+        <li style='margin-bottom: 1.5em;'>Financial time series often exhibit regime shifts, making the assumption of a single long-term mean (μ) problematic.</li>
+        <li style='margin-bottom: 1.5em;'>ML models may overfit local trends and fail to capture the global mean-reverting structure of the process.</li>
+        <li style='margin-bottom: 1.5em;'>Discrete observations of a continuous OU process can obscure the underlying dynamics, especially at lower sampling frequencies.</li>
+        <li style='margin-bottom: 1.5em;'>Non-linearities in real-world mean reversion may not be well captured by the linear OU formulation.</li>
+        <li style='margin-bottom: 1.5em;'>Parameter estimation for OU models can be biased in the presence of market microstructure noise or illiquidity.</li>
+        <li style='margin-bottom: 1.5em;'>Many ML models assume i.i.d. observations, which conflicts with the autocorrelated structure of OU processes.</li>
+      </ul>
+      "
+      ,
+      "
+      <ul>
+        <li style='margin-bottom: 1.5em;'>OUJ processes introduce discontinuities through jumps, making the likelihood surface complex and harder to optimize.</li>
+        <li style='margin-bottom: 1.5em;'>Estimating jump intensity, size distribution, and mean reversion simultaneously increases model complexity and identifiability issues.</li>
+        <li style='margin-bottom: 1.5em;'>ML models may confuse large jumps with changes in the mean-reverting level, mischaracterizing both long-term behavior and noise.</li>
+        <li style='margin-bottom: 1.5em;'>Sparse jump events require large datasets to estimate reliably, but financial data is often limited or irregular.</li>
+        <li style='margin-bottom: 1.5em;'>Most standard ML architectures are not designed to detect or model jump discontinuities without specialized preprocessing or architecture tweaks.</li>
+        <li style='margin-bottom: 1.5em;'>OUJ processes violate the continuous-path assumption underlying many ML models trained on smoothed or stationary data.</li>
+        <li style='margin-bottom: 1.5em;'>Hyperparameter tuning becomes more difficult as jump dynamics interact non-linearly with diffusion and drift components.</li>
+      </ul>
+      "
+
+
+
+    )
+  )
+
 
 
 usethis::use_data(spy_data, spread_data, cl01_data, masterlong, overwrite = TRUE)
 
-usethis::use_data(eda_text, eda_markdown, overwrite = T)
+usethis::use_data(eda_text, eda_markdown, eda_problems, overwrite = T)
 

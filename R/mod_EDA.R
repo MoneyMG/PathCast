@@ -40,18 +40,32 @@ mod_EDA_ui <- function(id) {
                               tags$p('What is deterministic/probabilistic?'),
                               tags$p('Does this imply any shortcuts?')
                             )
-            ),
-            shiny::tabPanel('The left overs',
+            ),shiny::tabPanel('Components',
+                              br(),
+                              div(class = 'text-center', tags$p('Our Algo wont have labels either, how could you tell what your looking at?')),
+                              br(),
+                              shiny::uiOutput(ns('driftui')),
+                              shiny::plotOutput(ns('components'))
+
+
+            ),shiny::tabPanel('The left overs',
+                            br(),
                             div(class = 'text-center', tags$p('What we should see if our model is 100% successful')),
                             shiny::plotOutput(ns('qq')),
+                            div(class = 'text-center', tags$p('How much data do we need to be conclusive in our tests? (T2M/dt)')),
                             gt::gt_output(ns('tests'))
 
             )
-          )
+          ),
+        style = "padding: 20px;"
       ),
       bslib::card(
         bslib::card_header(tags$h2('What problems will we have to overcome?')),
-        tags$p('Placeholder')
+        div(
+          style = "padding-top: 5rem;",
+          shiny::uiOutput(ns('modiffusionmoproblems'))
+        ),
+        style = "padding: 20px;"
       )
 
       )
@@ -109,7 +123,7 @@ mod_EDA_server <- function(id, r){
         tagList(
           shiny::fluidRow(
             shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price (S0)", value = params[2])),
-            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (sigma)", value = params[4])),
+            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (sigma)", value = params[4], step = 0.01)),
             shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (T2M)", value = params[5])),
             shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (dt)", value = params[6]))
           )
@@ -120,7 +134,7 @@ mod_EDA_server <- function(id, r){
             shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price (S0)", value = params[2])),
             shiny::column(3, shiny::numericInput(ns("mu"), "Mean (mu)", value = params[3])),
             shiny::column(3, shiny::numericInput(ns("theta"), "Reversion Speed (theta)", value = params[4])),
-            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (sigma)", value = params[5])),
+            shiny::column(3, shiny::numericInput(ns("sigma"), "Volatility (sigma)", value = params[5], step = 0.01)),
             shiny::column(3, shiny::numericInput(ns("T2M"), "Time to Maturity (T2M)", value = params[6])),
             shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (dt)", value = params[7]))
           )
@@ -155,6 +169,19 @@ mod_EDA_server <- function(id, r){
         set.seed(1234)
         RTL::simOUJ(params[1], params[2], params[3], input$theta, params[5], input$lambda, input$mu_jump, input$sd_jump, input$T2M, input$dt)
       }
+    })
+
+    ts <- shiny::reactive({
+
+      d <- data()
+
+      ts <- d %>%
+        dplyr::select(t, sim1) %>%
+        dplyr::mutate(fd = sim1 - dplyr::lag(sim1)) %>%
+        tidyr::drop_na() %>%
+        dplyr::select(t, fd) %>%
+        tsibble::as_tsibble(index = t)
+
     })
 
     basegraph <- shiny::reactive({
@@ -205,18 +232,10 @@ mod_EDA_server <- function(id, r){
 
     })
 
+
     tests <- shiny::reactive({
 
-      d <- data()
-
-      ts <- d %>%
-        dplyr::select(t, sim1) %>%
-        dplyr::mutate(fd = sim1 - dplyr::lag(sim1)) %>%
-        tidyr::drop_na() %>%
-        dplyr::select(t, fd) %>%
-        tsibble::as_tsibble(index = t)
-
-
+      ts <- ts()
 
       temp <- rbind(
         broom::tidy(tseries::kpss.test(ts$fd, 'Level')),
@@ -244,8 +263,55 @@ mod_EDA_server <- function(id, r){
     })
 
 
+    output$driftui <- shiny::renderUI({
+      if (r$series == 'SPY') {
+        shiny::numericInput(ns("drift"), "Drift", value = 0.01, step = 0.01)
+      }
+    })
+
+    components <- shiny::reactive({
+
+      ts <- ts()
+
+      if(r$series == 'SPY'){
+
+        params <- initparams()
+
+        set.seed(1234)
+        drift <- RTL::simGBM(1, input$S0, input$drift, input$sigma, input$T2M, input$dt) %>%
+          dplyr::rename(sim1_drift = sim1)
+
+        ts <- ts %>%
+          dplyr::left_join(drift)
+
+      }
+
+      ts %>%
+        tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
+        tsibble::group_by_key() %>%
+        fabletools::model(
+          feasts::STL(formula = value ~ season(window = input$dt + input$dt))
+        ) %>% fabletools::components()
+
+    })
+
+    output$components <- shiny::renderPlot({
+      components() %>% feasts::autoplot() + ggplot2::theme(legend.position = 'none')
+      })
+
+
 
     output$tests <- gt::render_gt(tests())
+
+    output$modiffusionmoproblems <- shiny::renderUI({
+
+      text <- eda_problems %>%
+        dplyr::filter(id == r$series) %>%
+        dplyr::pull(problems)
+
+
+      shiny::HTML(text)
+    })
 
   })
 }

@@ -93,21 +93,21 @@ mod_EDA_server <- function(id, r){
     output$title <- shiny::renderText(r$edatitle)
     output$explaination <- shiny::renderText(r$eda_explanation)
 
-    data <- shiny::reactive({
-      if(r$series == 'SPY'){
-        spy_data
-      }else if(r$series == 'CL/SYN Spread'){
-        spread_data
-      }else{
-        cl01_data
-      }
-
-    })
+    # data <- shiny::reactive({
+    #   if(r$series == 'SPY'){
+    #     spy_data
+    #   }else if(r$series == 'CL/SYN Spread'){
+    #     spread_data
+    #   }else{
+    #     cl01_data
+    #   }
+    #
+    # })
 
     initparams <- shiny::reactive({
-      if(r$series == 'SPY'){
+      if(r$series == 'Geometric Brownian Motion'){
         c(100, 100, 0, 0.2, 1, 1/12)
-      }else if(r$series == 'CL01'){
+      }else if(r$series == 'Ornstein-Uhlenbeck (OU)'){
         c(100, 10, 11, 1, 0.2, 3, 1/12)
       }else{
         c(100, 10, 11, 1, 0.2, 0.05, 2, 0.05, 1, 1/12)
@@ -119,7 +119,7 @@ mod_EDA_server <- function(id, r){
 
       params <- initparams()
 
-      if (r$series == "SPY") {
+      if (r$series == 'Geometric Brownian Motion') {
         tagList(
           shiny::fluidRow(
             shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price (S0)", value = params[2])),
@@ -128,7 +128,7 @@ mod_EDA_server <- function(id, r){
             shiny::column(3, shiny::numericInput(ns("dt"), "Time Step (dt)", value = params[6]))
           )
         )
-      }else if(r$series == 'CL01'){
+      }else if(r$series == 'Ornstein-Uhlenbeck (OU)'){
         tagList(
           shiny::fluidRow(
             shiny::column(3, shiny::numericInput(ns("S0"), "Initial Price (S0)", value = params[2])),
@@ -141,7 +141,7 @@ mod_EDA_server <- function(id, r){
         )
       }else{
         tagList(
-          tags$p('See series CL01 for underlying OU process'),
+          tags$p('See Ornstein-Uhlenbeck (OU) for underlying OU process'),
           shiny::fluidRow(
             shiny::column(3, shiny::numericInput(ns("theta"), "Reversion Speed (theta)", value = params[4])),
             shiny::column(3, shiny::numericInput(ns("lambda"), "Jump Probability (lambda)", value = params[6])),
@@ -157,11 +157,11 @@ mod_EDA_server <- function(id, r){
     data <- shiny::reactive({
       params <- initparams()
 
-      if(r$series == 'SPY'){
+      if(r$series == 'Geometric Brownian Motion'){
         set.seed(1234)
         RTL::simGBM(params[1], input$S0, params[3], input$sigma, input$T2M, input$dt)
         }
-      else if(r$series == 'CL01'){
+      else if(r$series == 'Ornstein-Uhlenbeck (OU)'){
         set.seed(1234)
         RTL::simOU(params[1], input$S0, input$mu, input$theta, input$sigma, input$T2M, input$dt)
       }
@@ -264,7 +264,7 @@ mod_EDA_server <- function(id, r){
 
 
     output$driftui <- shiny::renderUI({
-      if (r$series == 'SPY') {
+      if (r$series == 'Geometric Brownian Motion') {
         shiny::numericInput(ns("drift"), "Drift", value = 0.01, step = 0.01)
       }
     })
@@ -273,7 +273,7 @@ mod_EDA_server <- function(id, r){
 
       ts <- ts()
 
-      if(r$series == 'SPY'){
+      if(r$series == 'Geometric Brownian Motion'){
 
         params <- initparams()
 

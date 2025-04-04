@@ -40,7 +40,7 @@ masterlong <- dplyr::bind_rows(spread_data, spy_data, cl01_data)
 
 eda_text <-
   tibble::tibble(
-    id = c('SPY', 'CL01', 'CL/SYN Spread'),
+    id = c('Geometric Brownian Motion', 'Ornstein-Uhlenbeck (OU)', 'OU with Jumps'),
     explaination = c(
       'Just as the universe, shaped by initial conditions and influenced by random events, evolves in a complex, probabilistic manner,
       financial assets move within a framework of historical influences, market forces, and unpredictable shocks. While the path may be informed by past data,
@@ -57,7 +57,7 @@ eda_text <-
 
 eda_markdown <-
   tibble::tibble(
-    id = c('SPY', 'SPY', 'CL01', 'CL/SYN Spread'),
+    id = c('Geometric Brownian Motion', 'Geometric Brownian Motion', 'Ornstein-Uhlenbeck (OU)', 'OU with Jumps'),
     Process = c('GBM', 'GBM_d', 'OU', 'OUJ'),
     Continuous = c(
       "$dS_t = \\mu S_t dt + \\sigma S_t dW_t$",
@@ -76,7 +76,7 @@ eda_markdown <-
 
 eda_problems <-
   tibble::tibble(
-    id = c('SPY', 'CL01', 'CL/SYN Spread'),
+    id = c('Geometric Brownian Motion', 'Ornstein-Uhlenbeck (OU)', 'OU with Jumps'),
     problems = c(
 
       "<ul>

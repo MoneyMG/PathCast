@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_Series_ui <- function(id) {
   ns <- NS(id)
-  series <- c('SPY', 'CL01', 'CL/SYN Spread')
+  series <- c('Geometric Brownian Motion', 'Ornstein-Uhlenbeck (OU)', 'OU with Jumps')
   tagList(
     div(
       class = 'text-center',
@@ -27,7 +27,7 @@ mod_Series_ui <- function(id) {
                   This app explores the application of diffusion processes to different types of financial markets, using machine learning to estimate their behavior and
                   offer insights on how our estimations can inform trading strageties."),
     br(),
-    shiny::radioButtons(ns('series'), "Select a 'Process'", choices = series, selected = 'SPY', inline = TRUE),
+    shiny::radioButtons(ns('series'), "Select a Process", choices = series, selected = 'Geometric Brownian Motion', inline = TRUE),
     br(),
     shiny::textOutput(outputId = ns('seriesmessage'))
     )
@@ -46,9 +46,9 @@ mod_Series_server <- function(id, r){
       r$series <- input$series
 
       output$seriesmessage <- shiny::renderText({
-        if(input$series == 'SPY'){
+        if(input$series == 'Geometric Brownian Motion'){
         paste(input$series, "is more like the universe than you think. Head to exploratory data analysis (EDA) for an explaination.")
-      }else if(input$series == 'CL01'){
+      }else if(input$series == 'Ornstein-Uhlenbeck (OU)'){
         paste("Much like yourself, the", input$series, "process is affected by gravitational pull. Head to exploratory data analysis (EDA) for an explaination.")
       }else{
         paste("The", input$series, "process is akin to a SAFER pack. Head to exploratory data analysis (EDA) for an explaination.")
@@ -56,9 +56,9 @@ mod_Series_server <- function(id, r){
       })
 
       edaimage <- shiny::reactive({
-        if (input$series == "SPY") {
+        if (input$series == 'Geometric Brownian Motion') {
           "www/Expanding.png"
-        } else if (input$series == "CL01") {
+        } else if (input$series == 'Ornstein-Uhlenbeck (OU)') {
           "www/PushPull.png"
         } else {
           "www/SAFER.png"
@@ -66,9 +66,9 @@ mod_Series_server <- function(id, r){
       })
 
       edaimage_size <- shiny::reactive({
-        if (input$series == "SPY") {
+        if (input$series == 'Geometric Brownian Motion') {
           "500px"
-        } else if (input$series == "CL01") {
+        } else if (input$series == 'Ornstein-Uhlenbeck (OU)') {
           "500px"
         } else {
           "400px"
@@ -76,9 +76,9 @@ mod_Series_server <- function(id, r){
       })
 
       edatitle <- shiny::reactive({
-        if (input$series == "SPY") {
+        if (input$series == 'Geometric Brownian Motion') {
           "Geometric Brownian Motion"
-        } else if (input$series == "CL01") {
+        } else if (input$series == 'Ornstein-Uhlenbeck (OU)') {
           "Ornstein–Uhlenbeck"
         } else {
           "Ornstein–Uhlenbeck with Jumps"

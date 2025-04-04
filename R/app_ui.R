@@ -6,9 +6,6 @@
 #' @noRd
 app_ui <- function(request) {
   tagList(
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "www/pathcast_styling.css")
-    ),
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
@@ -41,7 +38,7 @@ golem_add_external_resources <- function() {
       * {
         font-family: 'Raleway', sans-serif !important;
       }
-    ")), #Not sure why inline works but file doesn't Need to check structure
+    ")),
     favicon(
       ico = "PathCast",
       rel = "shortcut icon",

@@ -20,8 +20,8 @@ mod_EDA_ui <- function(id) {
     br(),
     bslib::card(
        bslib::card_header(tags$h2('Process in a Vaccum')),
-       shiny::uiOutput(ns('inputs')),
-       plotly::plotlyOutput(ns('idealprocess'))
+       div(shiny::uiOutput(ns('inputs')), align = 'center'),
+       div(plotly::plotlyOutput(ns('idealprocess'), width = '75%'), align = 'center')
         ),
     br(),
     bslib::layout_columns(

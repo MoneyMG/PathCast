@@ -33,6 +33,7 @@ usethis::use_package("tseries")
 usethis::use_package('magrittr')
 usethis::use_package('broom')
 usethis::use_package('gt')
+usethis::use_package("katex", min_version = "1.4.1")
 
 ## Add modules ----
 

@@ -19,6 +19,7 @@ Imports:
     ggplot2,
     golem,
     gt,
+    katex (>= 1.4.1),
     magrittr,
     plotly,
     RTL,

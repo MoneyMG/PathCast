@@ -26,7 +26,7 @@ mod_EDA_ui <- function(id) {
     br(),
     bslib::layout_columns(
       style = "padding-top: 5px;",
-      col_widths = c(6, 6),
+      col_widths = c(8, 4),
       bslib::card(
         bslib::card_header(tags$h2('What are our Cues?')),
           shiny::tabsetPanel(
@@ -35,10 +35,17 @@ mod_EDA_ui <- function(id) {
                             br(),
                             div(
                               class = 'text-center',
-                              tags$p('What makes this distinct?'),
+                              tags$h3('Quetions that concern our algo:'),
+                              tags$p('What makes this process distinct?'),
                               tags$p('What is deterministic/probabilistic?'),
-                              tags$p('Does this imply any shortcuts our algo should seek?')
+                              tags$p('Does this imply any shortcuts?')
                             )
+            ),
+            shiny::tabPanel('First Difference',
+                            div(class = 'text-center', tags$p('As T2M increases or dt decreases what happens?')),
+                            shiny::plotOutput(ns('qq')),
+                            gt::gt_output(ns('tests'))
+
             )
           )
       ),
@@ -133,51 +140,37 @@ mod_EDA_server <- function(id, r){
       }
     })
 
-    basegraph <- shiny::reactive({
-
+    data <- shiny::reactive({
       params <- initparams()
 
       if(r$series == 'SPY'){
-
         set.seed(1234)
-
-        RTL::simGBM(params[1], input$S0, params[3], input$sigma, input$T2M, input$dt) %>%
-          tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
-          ggplot2::ggplot(ggplot2::aes(x = t, y = value, col = series)) +
-          ggplot2::geom_line() +
-          ggplot2::theme_minimal() +
-          ggplot2::scale_y_continuous(labels = scales::dollar) +
-          ggplot2::labs(
-            y = 'Price'
-          )
-      }else if(r$series == 'CL01'){
-
+        RTL::simGBM(params[1], input$S0, params[3], input$sigma, input$T2M, input$dt)
+        }
+      else if(r$series == 'CL01'){
         set.seed(1234)
-
-        RTL::simOU(params[1], input$S0, input$mu, input$theta, input$sigma, input$T2M, input$dt) %>%
-          tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
-          ggplot2::ggplot(ggplot2::aes(x = t, y = value, col = series)) +
-          ggplot2::geom_line() +
-          ggplot2::theme_minimal() +
-          ggplot2::scale_y_continuous(labels = scales::dollar) +
-          ggplot2::labs(
-            y = 'Price'
-          )
-
-      }else{
-
-        set.seed(1234)
-
-        RTL::simOUJ(params[1], params[2], params[3], input$theta, params[5], input$lambda, input$mu_jump, input$sd_jump, input$T2M, input$dt) %>%
-          tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
-          ggplot2::ggplot(ggplot2::aes(x = t, y = value, col = series)) +
-          ggplot2::geom_line() +
-          ggplot2::theme_minimal() +
-          ggplot2::scale_y_continuous(labels = scales::dollar) +
-          ggplot2::labs(
-            y = 'Price'
-          )
+        RTL::simOU(params[1], input$S0, input$mu, input$theta, input$sigma, input$T2M, input$dt)
       }
+      else{
+        set.seed(1234)
+        RTL::simOUJ(params[1], params[2], params[3], input$theta, params[5], input$lambda, input$mu_jump, input$sd_jump, input$T2M, input$dt)
+      }
+    })
+
+    basegraph <- shiny::reactive({
+
+      dat <- data()
+
+       dat %>%
+          tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
+          ggplot2::ggplot(ggplot2::aes(x = t, y = value, col = series)) +
+          ggplot2::geom_line() +
+          ggplot2::theme_minimal() +
+          ggplot2::scale_y_continuous(labels = scales::dollar) +
+          ggplot2::labs(
+            y = 'Price'
+          )
+
     })
 
     output$idealprocess <- plotly::renderPlotly(plotly::ggplotly(basegraph()) %>% plotly::layout(showlegend = FALSE))
@@ -191,13 +184,68 @@ mod_EDA_server <- function(id, r){
 
           temp %>%
           gt::gt() %>%
-          gt::fmt_markdown(columns = 'Formula')
+          gt::fmt_markdown(columns = c('Continuous', 'Discrete')) %>%
+          gt::opt_table_lines()
 
           })
 
     output$gt <- gt::render_gt(gt())
 
+    output$qq <- shiny::renderPlot({
 
+      d <- data()
+
+      sim1 <-  d %>%
+        dplyr::select(t, sim1) %>%
+        dplyr::mutate(fd = sim1 - dplyr::lag(sim1)) %>%
+        tidyr::drop_na()
+
+      stats::qqnorm(sim1$fd, main = "Simulated Series 1 First Difference - Normal Q-Q Plot")
+      stats::qqline(sim1$fd, col = "red")
+
+    })
+
+    tests <- shiny::reactive({
+
+      d <- data()
+
+      ts <- d %>%
+        dplyr::select(t, sim1) %>%
+        dplyr::mutate(fd = sim1 - dplyr::lag(sim1)) %>%
+        tidyr::drop_na() %>%
+        dplyr::select(t, fd) %>%
+        tsibble::as_tsibble(index = t)
+
+
+
+      temp <- rbind(
+        broom::tidy(tseries::kpss.test(ts$fd, 'Level')),
+        broom::tidy(tseries::kpss.test(ts$fd, 'Trend')),
+        broom::tidy(stats::Box.test(as.numeric(ts$fd), lag = 1, type = 'Ljung-Box'))
+      ) %>%
+        dplyr::mutate(conclusion  = ifelse(p.value > 0.05, 'Accept Null', 'Reject Null')) %>%
+        dplyr::mutate(meaning = dplyr::case_when(
+          method == 'Box-Ljung test' & conclusion == 'Reject Null' ~ 'First difference has structure',
+          method == 'Box-Ljung test' & conclusion == 'Accept Null' ~ 'First difference Produces White Noise',
+          method == 'KPSS Test for Level Stationarity' & conclusion == 'Accept Null' ~ 'First difference is level stationary',
+          method == 'KPSS Test for Level Stationarity' & conclusion == 'Reject Null' ~ 'First difference is not level stationary',
+          method == 'KPSS Test for Trend Stationarity' & conclusion == 'Accept Null' ~ 'First difference is trend stationary',
+          method == 'KPSS Test for Trend Stationarity' & conclusion == 'Reject Null' ~ 'First difference is not trend stationary',
+        ))
+
+      temp %>%
+        dplyr::rename_with(., .fn = ~stringr::str_to_title(.)) %>%
+        gt::gt() %>%
+        gt::opt_table_lines() %>%
+        gt::fmt_number(
+          columns = c('Statistic', 'P.value'),
+          decimals = 4
+        )
+    })
+
+
+
+    output$tests <- gt::render_gt(tests())
 
   })
 }

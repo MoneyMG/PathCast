@@ -1,11 +1,14 @@
 Package: PathCast
-Title: An Amazing Shiny App
+Title: A Look at How to Leverage Machine Learning to Estimate Difussion Processes
 Version: 0.0.0.9000
 Authors@R: 
-    person("firstname", "lastname", , "your@email.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person("Mitch", "Greer", , "magreer@ualberta.ca", role = c("aut", "cre"))
+Description: PathCast is a golem app that is deployable from your command line. The app looks at 3 distintic diffusion processes and their characterisictics. After a visual
+                      inspection of their characteristics, it then looks if there any preprocessing necassary before running through a machine learning process. Its goal is 
+  to provide a comprehensive insight into the mental model behind ML design.
 License: file LICENSE
 Imports: 
+    broom,
     bsicons,
     bslib,
     config,

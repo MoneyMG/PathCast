@@ -41,8 +41,8 @@ mod_EDA_ui <- function(id) {
                               tags$p('Does this imply any shortcuts?')
                             )
             ),
-            shiny::tabPanel('First Difference',
-                            div(class = 'text-center', tags$p('As T2M increases or dt decreases what happens?')),
+            shiny::tabPanel('The left overs',
+                            div(class = 'text-center', tags$p('What we should see if our model is 100% successful')),
                             shiny::plotOutput(ns('qq')),
                             gt::gt_output(ns('tests'))
 

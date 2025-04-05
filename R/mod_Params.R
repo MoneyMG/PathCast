@@ -13,6 +13,7 @@ mod_Params_ui <- function(id) {
   series <- c('SPY', 'CL01', 'CL/Syn Spread')
 
   tagList(
+    shinyjs::useShinyjs(),
     div(
       class = 'text-center',
       tags$h1("Parameter Estimation"),
@@ -34,7 +35,9 @@ mod_Params_ui <- function(id) {
     br(),
     bslib::card(
       tags$h2('Historical Path'),
-      div(plotly::plotlyOutput(ns('visualize'), width = '75%'), align = 'center')
+      div(plotly::plotlyOutput(ns('visualize'), width = '75%'),
+      shiny::actionButton(ns('estimate'), 'Estimate Parameters', width = '25%'),
+      align = 'center'),
     ),
     br(),
     shiny::uiOutput(ns('dynamix'))
@@ -89,6 +92,17 @@ mod_Params_server <- function(id, r){
 
     })
 
+    shiny::observeEvent(input$estimate,{
+
+      shinyjs::hide('estimate')
+
+      shinyalert::shinyalert(
+        title = "Estimating Parameters",
+        text = "Running diffusion parameter estimation. Efficiency: 100%. Sarcasm setting: 75%",
+        type = "info",
+        showConfirmButton = FALSE,
+        timer = 2500
+      )
 
     fullset <- shiny::reactive({
 
@@ -284,9 +298,6 @@ mod_Params_server <- function(id, r){
 
       r$dnum <- drift_numeric
 
-      # 2. MLE
-
-      # mu_MLE = 1/T * sum(r_t + .5 var)
 
       bT <- dplyr::last(dat$t)
 
@@ -319,6 +330,7 @@ mod_Params_server <- function(id, r){
 
     })
 
+
     fits <- shiny::reactive({
 
 
@@ -326,7 +338,6 @@ mod_Params_server <- function(id, r){
       col <- ifelse(input$instrument == 'CL/Syn Spread', 'spread', input$instrument)
       garchdat <- garch_data()
       actual <- dplyr::pull(dat, !!rlang::sym(col))
-
 
 
       n <- nrow(dat)
@@ -367,6 +378,7 @@ mod_Params_server <- function(id, r){
 
 
     output$visfit <- plotly::renderPlotly({
+
 
       data <- fits()
 
@@ -415,8 +427,10 @@ mod_Params_server <- function(id, r){
       }else{
         tags$h3('This tab is purposely blank for OU/OUJ')
       }
-    })
+      })
 
+
+    })
 
 
   })

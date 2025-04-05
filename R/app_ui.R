@@ -14,6 +14,25 @@ app_ui <- function(request) {
       tabPanel("Process Selection", mod_Series_ui("Series_1")),
       tabPanel("EDA", mod_EDA_ui("EDA_1")),
       tabPanel("Parameter Estimation", mod_Params_ui("Params_1"))
+    ),
+    br(),
+    br(),
+    tags$footer(
+      class = "text-center text-muted mt-4 mb-2",
+      style = "width: 100%; padding: 0px;",
+      HTML(paste0(
+      "© 2025 Mitch Greer. &nbsp;&nbsp;",
+      a(
+        href = "https://www.linkedin.com/in/mitchgreer-commodities-trendfollowing-energy-trading-quant-auspice/",
+        bsicons::bs_icon("linkedin")
+      ),
+      "&nbsp;&nbsp;",
+      a(
+        href = "mailto:magreer@ualberta.ca",
+        bsicons::bs_icon("envelope")
+      )
+      )
+      )
     )
 
   )

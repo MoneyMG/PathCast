@@ -366,8 +366,6 @@ mod_Params_server <- function(id, r){
     })
 
 
-    output$error <- shiny::renderDataTable({fits()})
-
     output$visfit <- plotly::renderPlotly({
 
       data <- fits()
@@ -409,16 +407,9 @@ mod_Params_server <- function(id, r){
             bslib::card('Drift',
                         gt::gt_output(ns('drifts'))),
             bslib::card('Fits',
-                        shiny::tabsetPanel(
-                            shiny::tabPanel(
-                              'Visually',
-                              plotly::plotlyOutput(ns('visfit'))),
-                        shiny::tabPanel(
-                          'Errors',
-                          shiny::dataTableOutput(ns('error'))
+                         plotly::plotlyOutput(ns('visfit'))
                         )
-                      )
-                    )
+
           )
         )
       }else{

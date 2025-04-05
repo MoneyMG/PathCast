@@ -36,7 +36,7 @@ cl01_data <- RTL::dflong %>%
 
 masterlong <- dplyr::bind_rows(spread_data, spy_data, cl01_data)
 
-
+max(masterlong$t)
 
 eda_text <-
   tibble::tibble(

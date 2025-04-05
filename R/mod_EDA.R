@@ -93,16 +93,6 @@ mod_EDA_server <- function(id, r){
     output$title <- shiny::renderText(r$edatitle)
     output$explaination <- shiny::renderText(r$eda_explanation)
 
-    # data <- shiny::reactive({
-    #   if(r$series == 'SPY'){
-    #     spy_data
-    #   }else if(r$series == 'CL/SYN Spread'){
-    #     spread_data
-    #   }else{
-    #     cl01_data
-    #   }
-    #
-    # })
 
     initparams <- shiny::reactive({
       if(r$series == 'Geometric Brownian Motion'){
@@ -113,6 +103,7 @@ mod_EDA_server <- function(id, r){
         c(100, 10, 11, 1, 0.2, 0.05, 2, 0.05, 1, 1/12)
       }
     })
+
 
 
     output$inputs <- shiny::renderUI({
@@ -154,6 +145,32 @@ mod_EDA_server <- function(id, r){
       }
     })
 
+    shiny::observe({
+
+      req(input$S0, input$sigma, input$T2M, input$dt)
+
+      r$s0 <- input$S0
+      r$sigma <- input$sigma
+
+      if (r$series == 'Ornstein-Uhlenbeck (OU)' || r$series == 'Jump Diffusion') {
+        req(input$mu, input$theta)
+        r$mu <- input$mu
+        r$theta <- input$theta
+      }
+
+      if (r$series == 'Jump Diffusion') {
+        req(input$lambda, input$mu_jump, input$sd_jump)
+        r$lambda <- input$lambda
+        r$meanj <- input$mu_jump
+        r$sdj <- input$sd_jump
+      }
+
+    })
+
+    shiny::observe({
+      r$drift <- input$drift
+    })
+
     data <- shiny::reactive({
       params <- initparams()
 
@@ -178,8 +195,7 @@ mod_EDA_server <- function(id, r){
       ts <- d %>%
         dplyr::select(t, sim1) %>%
         dplyr::mutate(fd = sim1 - dplyr::lag(sim1)) %>%
-        tidyr::drop_na() %>%
-        dplyr::select(t, fd) %>%
+        dplyr::select(t, sim1, fd) %>%
         tsibble::as_tsibble(index = t)
 
     })
@@ -286,17 +302,21 @@ mod_EDA_server <- function(id, r){
 
       }
 
+      r$basecase <- ts
+
       ts %>%
+        dplyr::select(-fd) %>%
+        tidyr::drop_na() %>%
         tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
         tsibble::group_by_key() %>%
         fabletools::model(
-          feasts::STL(formula = value ~ season(window = input$dt + input$dt))
+          feasts::STL(formula = value ~ season(window = as.numeric(input$dt) + as.numeric(input$dt)))
         ) %>% fabletools::components()
 
     })
 
     output$components <- shiny::renderPlot({
-      components() %>% feasts::autoplot() + ggplot2::theme(legend.position = 'none')
+      components() %>% feasts::autoplot()  + ggplot2::theme_minimal() + ggplot2::theme(legend.position = 'none')
       })
 
 

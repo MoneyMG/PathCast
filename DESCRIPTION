@@ -22,6 +22,7 @@ Imports:
     katex (>= 1.4.1),
     magrittr,
     plotly,
+    rlang,
     RTL,
     scales,
     shiny,

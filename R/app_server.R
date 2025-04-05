@@ -12,4 +12,6 @@ app_server <- function(input, output, session) {
 
   mod_EDA_server("EDA_1", r = r)
 
+  mod_Params_server("Params_1", r = r)
+
 }

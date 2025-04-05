@@ -97,6 +97,7 @@ mod_Series_server <- function(id, r){
       r$edatitle <- edatitle()
       r$eda_explanation <- edaexplan()
 
+
     })
 
   })

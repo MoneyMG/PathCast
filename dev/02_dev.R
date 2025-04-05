@@ -34,6 +34,7 @@ usethis::use_package('magrittr')
 usethis::use_package('broom')
 usethis::use_package('gt')
 usethis::use_package("katex", min_version = "1.4.1")
+usethis::use_package('rlang')
 
 ## Add modules ----
 
@@ -41,8 +42,8 @@ usethis::use_package("katex", min_version = "1.4.1")
 # Process Modules
 
 golem::add_module(name = "Series", with_test = TRUE)
-
 golem::add_module(name = "EDA", with_test = TRUE)
+golem::add_module(name = "Params", with_test = TRUE)
 # golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----

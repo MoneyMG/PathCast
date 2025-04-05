@@ -325,40 +325,62 @@ mod_Params_server <- function(id, r){
       dat <- fullset()
       col <- ifelse(input$instrument == 'CL/Syn Spread', 'spread', input$instrument)
       garchdat <- garch_data()
+      actual <- dplyr::pull(dat, !!rlang::sym(col))
 
 
 
       n <- nrow(dat)
       dt <- 1/252
-      time <- seq(0, n-1, by = dt)
-      s0 <- dplyr::pull(dat, !!rlang::sym(col))[1]
+      s0 <- actual[1]
+      T2M = (n-1)*dt^1
 
 
       set.seed(123)
-      W <- cumsum(c(0, rnorm(n-1, mean = 0, sd = sqrt(dt))))
-
       sigma_static <- sd(dat$actual_log, na.rm = T)
-      sigma_garch <- zoo::coredata(garchdat$garch)
+
+      print(sigma_static)
 
 
-      simnum <- s0 * exp((r$dnum - 0.5 * sigma_static^2) * time + sigma_static * W)
-      simmle <- s0 * exp((r$dMLE - 0.5 * sigma_static^2) * time + sigma_static * W)
-      simgarch <- s0 * exp((r$dgarch - 0.5 * sigma_static^2) * time + sigma_static * W)
+
+      simnum <- RTL::simGBM(1, s0, r$dnum, sigma_static, T2M, dt) %>% dplyr::rename('simnum' = sim1)
+      simmle <- RTL::simGBM(1, s0, r$dMLE, sigma_static, T2M, dt) %>% dplyr::rename('simmle' = sim1)
+      simgarch <- RTL::simGBM(1, s0, r$dgarch, sigma_static, T2M, dt) %>% dplyr::rename('simgarch' = sim1)
 
 
-      temp <- tibble::tibble(
-        t = time,
-        numeric_d = simnum,
-        mle_d = simmle,
-        garch_d = simgarch
-      )
+
+
+      temp <- dat %>%
+        dplyr::select(t, !!rlang::sym(col)) %>%
+        dplyr::left_join(simnum) %>%
+        dplyr::left_join(simmle) %>%
+        dplyr::left_join(simgarch) %>%
+        dplyr::mutate(
+          error_num = !!rlang::sym(col) - simnum,
+          error_mle = !!rlang::sym(col) - simmle,
+          error_garch = !!rlang::sym(col) - simgarch
+        )
+
 
       temp
 
     })
 
 
-    output$fits <- shiny::renderDataTable({fits()})
+    output$error <- shiny::renderDataTable({fits()})
+
+    output$visfit <- plotly::renderPlotly({
+
+      data <- fits()
+
+      p <- data %>%
+        dplyr::select(!contains('error')) %>%
+        tidyr::pivot_longer(-t, names_to = 'series', values_to = 'value') %>%
+        ggplot2::ggplot(ggplot2::aes(x = t, y = value, col = series)) +
+        ggplot2::geom_line() +
+        ggplot2::theme_minimal()
+
+      plotly::ggplotly(p)
+    })
 
     output$dynamix <- shiny::renderUI({
 
@@ -387,8 +409,16 @@ mod_Params_server <- function(id, r){
             bslib::card('Drift',
                         gt::gt_output(ns('drifts'))),
             bslib::card('Fits',
-                        shiny::dataTableOutput(ns('fits'))
+                        shiny::tabsetPanel(
+                            shiny::tabPanel(
+                              'Visually',
+                              plotly::plotlyOutput(ns('visfit'))),
+                        shiny::tabPanel(
+                          'Errors',
+                          shiny::dataTableOutput(ns('error'))
                         )
+                      )
+                    )
           )
         )
       }else{

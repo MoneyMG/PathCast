@@ -24,6 +24,7 @@ Imports:
     plotly,
     rlang,
     RTL,
+    rugarch,
     scales,
     shiny,
     tidyr,

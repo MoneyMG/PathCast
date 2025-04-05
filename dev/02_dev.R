@@ -35,6 +35,7 @@ usethis::use_package('broom')
 usethis::use_package('gt')
 usethis::use_package("katex", min_version = "1.4.1")
 usethis::use_package('rlang')
+usethis::use_package('rugarch')
 
 ## Add modules ----
 

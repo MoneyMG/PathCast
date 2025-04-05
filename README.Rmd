@@ -22,9 +22,13 @@ output: github_document
 
 You can install the development version of `{PathCast}` like so:
 
-```{r}
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```{r, eval=FALSE}
+devtools::install_github('MoneyMG/PathCast')
 ```
+
+Docker image also available via dockerhub:
+
+[Pathcast on Docker Hub](https://hub.docker.com/r/magad1/pathcast)
 
 ## Run
 
@@ -44,11 +48,7 @@ This README has been compiled on the
 Sys.time()
 ```
 
-Here are the tests results and package coverage:
-
-```{r, error = TRUE}
-devtools::check(quiet = TRUE)
-```
+package coverage:
 
 ```{r echo = FALSE}
 unloadNamespace("PathCast")

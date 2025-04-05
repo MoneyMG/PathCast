@@ -11,8 +11,12 @@
 You can install the development version of `{PathCast}` like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+devtools::install_github('MoneyMG/PathCast')
 ```
+
+Docker image also available via dockerhub:
+
+[Pathcast on Docker Hub](https://hub.docker.com/r/magad1/pathcast)
 
 ## Run
 
@@ -30,33 +34,19 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2025-03-24 16:16:14 MDT"
+#> [1] "2025-04-05 14:22:37 MDT"
 ```
 
-Here are the tests results and package coverage:
-
-``` r
-devtools::check(quiet = TRUE)
-#> ℹ Loading PathCast
-#> ── R CMD check results ──────────────────────────────── PathCast 0.0.0.9000 ────
-#> Duration: 1m 34.3s
-#> 
-#> ❯ checking DESCRIPTION meta-information ... WARNING
-#>   Non-standard license specification:
-#>     What license is it under?
-#>   Standardizable: FALSE
-#> 
-#> 0 errors ✔ | 1 warning ✖ | 0 notes ✔
-#> Error: R CMD check found WARNINGs
-```
+package coverage:
 
 ``` r
 covr::package_coverage()
-#> PathCast Coverage: 28.85%
+#> PathCast Coverage: 25.57%
 #> R/app_config.R: 0.00%
 #> R/app_server.R: 0.00%
 #> R/app_ui.R: 0.00%
 #> R/run_app.R: 0.00%
-#> R/mod_Series.R: 90.00%
-#> R/mod_EDA.R: 100.00%
+#> R/mod_Params.R: 14.05%
+#> R/mod_Series.R: 38.67%
+#> R/mod_EDA.R: 43.03%
 ```

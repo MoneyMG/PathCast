@@ -20,7 +20,7 @@ output: github_document
 
 ## What is PathCast?
 
-**PathCast** is an educational and exploratory data analysis tool designed to support the development of machine learning frameworks—specifically for diffusion process classification and parameter estimation.
+**PathCast** is an educational and exploratory data analysis tool designed to support the development of machine learning frameworks - specifically for diffusion process classification and parameter estimation. PathCast is best used in your browser!
 
 ### PathCast has three main goals:
 

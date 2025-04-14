@@ -9,9 +9,9 @@
 ## What is PathCast?
 
 **PathCast** is an educational and exploratory data analysis tool
-designed to support the development of machine learning
-frameworks—specifically for diffusion process classification and
-parameter estimation.
+designed to support the development of machine learning frameworks -
+specifically for diffusion process classification and parameter
+estimation. PathCast is best used in your browser!
 
 ### PathCast has three main goals:
 
@@ -71,7 +71,7 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2025-04-14 10:37:39 MDT"
+#> [1] "2025-04-14 10:45:45 MDT"
 ```
 
 package coverage:
